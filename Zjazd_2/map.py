@@ -1,5 +1,6 @@
 import math
 from random import randint
+from shapely import LineString
 
 
 class Map:
@@ -7,6 +8,7 @@ class Map:
         self.points = []
         self.dimensions = dimensions
         self.turns = turns
+        self.length = 0
 
         self.__generate_points()
 
@@ -14,6 +16,18 @@ class Map:
         """Recreate random map."""
         self.points = []
         self.__generate_points()
+
+    def distance_to_position(self, distance):
+        """Get XY coordinates by given distance on track."""
+
+        points = self.points
+        points.append(self.points[0])
+
+        line = LineString(points)
+
+        distance = distance % self.length
+
+        return line.interpolate(distance)
 
     def __generate_points(self):
         """Generate random map points that are not too close to each other."""
@@ -33,3 +47,15 @@ class Map:
 
             if valid:
                 self.points.append((x, y))
+
+        self.__calculate_length()
+
+    def __calculate_length(self):
+        """Calculate total track length, in pixels."""
+
+        points = self.points
+        points.append(self.points[0])
+
+        line = LineString(points)
+
+        self.length = int(line.length)
