@@ -59,3 +59,4 @@ class Map:
         line = LineString(points)
 
         self.length = int(line.length)
+

@@ -1,6 +1,10 @@
+import math
+
 import pygame
 
 MAP_MARGIN = 100
+FONT_COLOR = (0, 0, 0)
+OBJECT_COLOR = (0, 0, 255)
 
 
 class Simulation:
@@ -16,6 +20,8 @@ class Simulation:
             vsync=1
         )
 
+        pygame.display.set_caption("Automatic Braking System Simulation")
+
     def __del__(self):
         """On program end, cleanup resources."""
         pygame.quit()
@@ -30,10 +36,18 @@ class Simulation:
                 break
 
             time_delta = clock.tick()
+            # Check Way before move is it turn?
 
-            self.train.move(time_delta)
+            angle_deg = self.__angle_between_vectors(self.map.distance_to_position(self.train.position))
+
+            if 15 < angle_deg < 180:
+                print(f"Angle between points is greater than 10 degrees.")
+                self.train.auto_brake(time_delta)
+            else:
+                self.train.move(time_delta)
 
             self.__draw()
+            print(f".")
 
     def __handle_events(self):
         """Handle PyGame events like exit or keypress."""
@@ -62,4 +76,17 @@ class Simulation:
         train_position = self.map.distance_to_position(self.train.position)
         pygame.draw.circle(self.screen, (255, 0, 0), (train_position.x, train_position.y), 5)
 
+        #  Displaying speed of Train
+        font = pygame.font.Font(None, 28)
+        speed_text = font.render(f"Speed: {self.train.speed:.2f}", True, FONT_COLOR)
+        self.screen.blit(speed_text, (10, 10))
+
         pygame.display.flip()
+
+    def __angle_between_vectors(self, vector2):
+        dot_product = self.train.position * vector2.x + self.train.position * vector2.y
+        magnitude1 = math.sqrt(self.train.position ** 2 + self.train.position ** 2)
+        magnitude2 = math.sqrt(vector2.x ** 2 + vector2.y ** 2)
+        angle_rad = math.acos(dot_product / (magnitude1 * magnitude2))
+        angle_deg = math.degrees(angle_rad)
+        return angle_deg
