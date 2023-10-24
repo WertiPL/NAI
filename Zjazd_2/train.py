@@ -9,12 +9,12 @@ class Train:
 
         self.position = 0
 
-    def move(self, ticks):
+    def move(self, ticks, brake):
         """Increment position and calculate other parameters based on elapsed time between main loop iterations."""
-        self.speed = ticks * self.acceleration
+        self.speed = ticks * (self.acceleration - brake)
         self.position += self.speed
 
-    def auto_brake(self, ticks):
+    def auto_brake(self):
         """Here will auto brake"""
-        self.speed -= 2
-        self.position -= self.speed
+        self.acceleration -= 0.2
+

@@ -42,9 +42,9 @@ class Simulation:
 
             if 15 < angle_deg < 180:
                 print(f"Angle between points is greater than 10 degrees.")
-                self.train.auto_brake(time_delta)
+                self.train.move(time_delta, 0.15)
             else:
-                self.train.move(time_delta)
+                self.train.move(time_delta, 0)
 
             self.__draw()
             print(f".")
