@@ -41,9 +41,9 @@ class Simulation:
             # angle_deg = self.__angle_between_vectors(self.map.distance_to_position(self.train.position))
             absolute_distance, relative_distance = self.find_closest_vertex(self.map.points)
 
-            # print(f"Absolute Distance to Closest Vertex: {absolute_distance}")
+            print(f"Absolute Distance to Closest Vertex: {absolute_distance}")
             print(f"Relative Distance to Turn: {relative_distance}")
-            if relative_distance < 180:
+            if relative_distance < 100:
 
                 # print(f"Angle between points is greater than 10 degrees.")
                 self.train.move(time_delta, 0.15)
@@ -73,6 +73,8 @@ class Simulation:
 
             total_distance += distance
             previous_vertex = vertex
+
+        return 0, 0
 
     def __handle_events(self):
         """Handle PyGame events like exit or keypress."""

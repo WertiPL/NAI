@@ -21,6 +21,7 @@ class Map:
         """Get XY coordinates by given distance on track."""
 
         points = self.points
+        # unnecessary to delete
         # points.append(self.points[0])
 
         line = LineString(points)
@@ -56,7 +57,8 @@ class Map:
         """Calculate total track length, in pixels."""
 
         points = self.points
-        points.append(self.points[0])
+        # unnecessary to delete
+        # points.append(self.points[0])
 
         line = LineString(points)
 
