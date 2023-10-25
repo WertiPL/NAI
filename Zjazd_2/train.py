@@ -18,3 +18,5 @@ class Train:
         """Here will auto brake"""
         self.acceleration -= 0.8
 
+    def reset_position(self):
+        return 0
