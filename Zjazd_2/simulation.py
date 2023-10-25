@@ -38,16 +38,41 @@ class Simulation:
             time_delta = clock.tick()
             # Check Way before move is it turn?
 
-            angle_deg = self.__angle_between_vectors(self.map.distance_to_position(self.train.position))
+            # angle_deg = self.__angle_between_vectors(self.map.distance_to_position(self.train.position))
+            absolute_distance, relative_distance = self.find_closest_vertex(self.map.points)
 
-            if 15 < angle_deg < 180:
-                print(f"Angle between points is greater than 10 degrees.")
+            # print(f"Absolute Distance to Closest Vertex: {absolute_distance}")
+            print(f"Relative Distance to Turn: {relative_distance}")
+            if relative_distance < 180:
+
+                # print(f"Angle between points is greater than 10 degrees.")
                 self.train.move(time_delta, 0.15)
             else:
                 self.train.move(time_delta, 0)
 
             self.__draw()
             print(f".")
+
+    def find_closest_vertex(self, vertices):
+        total_distance = 0
+        previous_vertex = vertices[0]
+
+        for vertex in vertices[1:]:
+            # Calculate the distance between the current and previous vertices
+            distance = math.sqrt((vertex[0] - previous_vertex[0]) ** 2 + (vertex[1] - previous_vertex[1]) ** 2)
+
+            # Check if the total distance exceeds the train's position
+            if total_distance + distance > self.train.position:
+                # Calculate the absolute distance to the closest vertex
+                absolute_distance = self.train.position - total_distance
+
+                # Calculate the relative (remaining) distance to the turn
+                remaining_distance = distance - absolute_distance
+
+                return absolute_distance, remaining_distance
+
+            total_distance += distance
+            previous_vertex = vertex
 
     def __handle_events(self):
         """Handle PyGame events like exit or keypress."""

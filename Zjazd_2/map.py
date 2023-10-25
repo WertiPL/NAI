@@ -21,13 +21,15 @@ class Map:
         """Get XY coordinates by given distance on track."""
 
         points = self.points
-        points.append(self.points[0])
+        # points.append(self.points[0])
 
         line = LineString(points)
 
         distance = distance % self.length
 
         return line.interpolate(distance)
+
+
 
     def __generate_points(self):
         """Generate random map points that are not too close to each other."""
