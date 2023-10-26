@@ -54,6 +54,10 @@ class Simulation:
             # self.train.move(time_delta, 0)
 
             self.__draw()
+
+            if self.train.position > self.map.length:
+                self.train.reset_position()
+
             print(f".")
 
     def find_closest_vertex(self, vertices):

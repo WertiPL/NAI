@@ -7,6 +7,8 @@ class Train:
     def restart(self):
         """Place train on start without any speed (initial state)."""
 
+        self.speed = 0
+        self.acceleration = 0.2
         self.position = 0
 
     def move(self, ticks, brake):
@@ -19,4 +21,4 @@ class Train:
         self.acceleration -= 0.2
 
     def reset_position(self):
-        return 0
+        self.position = 0

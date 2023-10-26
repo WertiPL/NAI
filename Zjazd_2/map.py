@@ -27,9 +27,8 @@ class Map:
 
         distance = distance % self.length
         points.pop(3)
+
         return line.interpolate(distance)
-
-
 
     def __generate_points(self):
         """Generate random map points that are not too close to each other."""
@@ -52,7 +51,6 @@ class Map:
 
         self.__calculate_length()
 
-
     def __calculate_length(self):
         """Calculate total track length, in pixels."""
 
@@ -60,4 +58,5 @@ class Map:
         points.append(self.points[0])
         line = LineString(points)
         points.pop(3)
+
         self.length = int(line.length)
