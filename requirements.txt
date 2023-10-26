@@ -1,2 +1,4 @@
 pygame~=2.5
 shapely~=2.0
+scikit-fuzzy==0.4.2
+matplotlib
