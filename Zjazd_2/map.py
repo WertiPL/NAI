@@ -21,14 +21,12 @@ class Map:
         """Get XY coordinates by given distance on track."""
 
         points = self.points
-        # unnecessary to delete
         points.append(self.points[0])
 
         line = LineString(points)
 
         distance = distance % self.length
-
-
+        points.pop(3)
         return line.interpolate(distance)
 
 
