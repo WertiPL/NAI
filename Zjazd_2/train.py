@@ -1,7 +1,7 @@
 class Train:
     def __init__(self):
         self.position = 0
-        self.acceleration = 0.8
+        self.acceleration = 0.2
         self.speed = 0
 
     def restart(self):
@@ -16,7 +16,7 @@ class Train:
 
     def auto_brake(self):
         """Here will auto brake"""
-        self.acceleration -= 0.8
+        self.acceleration -= 0.2
 
     def reset_position(self):
         return 0

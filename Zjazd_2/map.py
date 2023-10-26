@@ -22,11 +22,12 @@ class Map:
 
         points = self.points
         # unnecessary to delete
-        # points.append(self.points[0])
+        points.append(self.points[0])
 
         line = LineString(points)
 
         distance = distance % self.length
+
 
         return line.interpolate(distance)
 
@@ -53,14 +54,12 @@ class Map:
 
         self.__calculate_length()
 
+
     def __calculate_length(self):
         """Calculate total track length, in pixels."""
 
         points = self.points
-        # unnecessary to delete
-        # points.append(self.points[0])
-
+        points.append(self.points[0])
         line = LineString(points)
-
+        points.pop(3)
         self.length = int(line.length)
-
