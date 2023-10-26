@@ -39,19 +39,19 @@ class Simulation:
             # Check Way before move is it turn?
 
             # angle_deg = self.__angle_between_vectors(self.map.distance_to_position(self.train.position))
-            # absolute_distance, relative_distance = self.find_closest_vertex(self.map.points)
+            absolute_distance, relative_distance = self.find_closest_vertex(self.map.points)
             # #not working but not crashing
             # #if absolute_distance + relative_distance == 0:
             # #   self.train.position = 0
-            # print(f"Absolute Distance to Closest Vertex: {absolute_distance}")
-            # print(f"Relative Distance to Turn: {relative_distance}")
-            # if relative_distance < 100:
-            #
-            #     # print(f"Angle between points is greater than 10 degrees.")
-            #     self.train.move(time_delta, 0.15)
-            # else:
-            #     self.train.move(time_delta, 0)
-            self.train.move(time_delta, 0)
+            print(f"Absolute Distance to Closest Vertex: {absolute_distance}")
+            print(f"Relative Distance to Turn: {relative_distance}")
+            if relative_distance < 100:
+
+                # print(f"Angle between points is greater than 10 degrees.")
+                self.train.move(time_delta, 0.15)
+            else:
+                self.train.move(time_delta, 0)
+            # self.train.move(time_delta, 0)
 
             self.__draw()
             print(f".")
