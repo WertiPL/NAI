@@ -59,8 +59,8 @@ class Simulation:
     def find_closest_vertex(self, vertices):
         total_distance = 0
         previous_vertex = vertices[0]
-
-        for vertex in vertices[1:]:
+        vertices.append(previous_vertex)
+        for vertex in vertices:
             # Calculate the distance between the current and previous vertices
             distance = math.sqrt((vertex[0] - previous_vertex[0]) ** 2 + (vertex[1] - previous_vertex[1]) ** 2)
 
