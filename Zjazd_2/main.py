@@ -23,7 +23,7 @@
 
     The simulation loop can restart any time and create new triangle just  presses the 'R' key to reset the simulation
 """
-
+from Auto_Brake_System.controller import TrainBrakingController
 #!/usr/bin/python3
 
 from map import Map
@@ -34,9 +34,10 @@ MAP_WIDTH = 800
 MAP_HEIGHT = 800
 
 if __name__ == '__main__':
+    controller = TrainBrakingController()
     game_map = Map((MAP_WIDTH, MAP_HEIGHT), turns=3)
     train = Train()
 
-    simulation = Simulation(game_map, train)
+    simulation = Simulation(game_map, train, controller)
 
     simulation.run()

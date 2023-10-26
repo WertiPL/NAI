@@ -13,7 +13,11 @@ class Train:
 
     def move(self, ticks, brake):
         """Increment position and calculate other parameters based on elapsed time between main loop iterations."""
-        self.speed = ticks * (self.acceleration - brake)
+        if (self.acceleration - brake) == 0:
+            self.speed = 0
+        else:
+            self.speed = ticks * (self.acceleration - brake)
+
         self.position += self.speed
 
     def auto_brake(self):

@@ -8,10 +8,11 @@ OBJECT_COLOR = (0, 0, 255)
 
 
 class Simulation:
-    def __init__(self, game_map, train):
+    def __init__(self, game_map, train, controller):
         """Initialize PyGame and all other resources."""
         self.map = game_map
         self.train = train
+        self.braking_controller = controller
 
         pygame.init()
         self.screen = pygame.display.set_mode(
@@ -28,7 +29,6 @@ class Simulation:
 
     def run(self):
         """Main simulation loop that handles events and draws current data."""
-
         clock = pygame.time.Clock()
 
         while True:
@@ -38,20 +38,24 @@ class Simulation:
             time_delta = clock.tick()
             # Check Way before move is it turn?
 
-            # angle_deg = self.__angle_between_vectors(self.map.distance_to_position(self.train.position))
+            angle_deg = self.__angle_between_vectors(self.map.distance_to_position(self.train.position))
             absolute_distance, relative_distance = self.find_closest_vertex(self.map.points)
-            # #not working but not crashing
-            # #if absolute_distance + relative_distance == 0:
-            # #   self.train.position = 0
+
             print(f"Absolute Distance to Closest Vertex: {absolute_distance}")
             print(f"Relative Distance to Turn: {relative_distance}")
-            if relative_distance < 100:
-
-                # print(f"Angle between points is greater than 10 degrees.")
-                self.train.move(time_delta, 0.15)
+            if angle_deg != 0 or angle_deg > 10:
+                if angle_deg < 0:
+                    angle_deg = angle_deg * -1
+                distance_to_turn = relative_distance
+                angle_of_turn = angle_deg
+                speed_of_train = self.train.speed
+                if 800 > distance_to_turn > 0 and 0 < speed_of_train < 5 and 0 < angle_deg < 180:
+                    braking_force = self.braking_controller.compute(distance_to_turn, angle_of_turn, speed_of_train)
+                else:
+                    braking_force = 0
             else:
-                self.train.move(time_delta, 0)
-            # self.train.move(time_delta, 0)
+                braking_force = 0
+            self.train.move(time_delta, braking_force)
 
             self.__draw()
 
@@ -118,9 +122,29 @@ class Simulation:
         pygame.display.flip()
 
     def __angle_between_vectors(self, vector2):
+        # Calculate the dot product of two vectors
         dot_product = self.train.position * vector2.x + self.train.position * vector2.y
+
+        # Calculate the magnitude (length) of the first vector
         magnitude1 = math.sqrt(self.train.position ** 2 + self.train.position ** 2)
+
+        # Calculate the magnitude (length) of the second vector
         magnitude2 = math.sqrt(vector2.x ** 2 + vector2.y ** 2)
-        angle_rad = math.acos(dot_product / (magnitude1 * magnitude2))
+
+        # Check if one of the vectors is zero (undefined angle)
+        if magnitude1 == 0 or magnitude2 == 0:
+            # One of the vectors is zero, and the angle is undefined
+            return 0  # or another value representing an undefined angle
+
+        # Check if the dot product is very close to zero (almost perpendicular vectors)
+        if abs(dot_product) < 1e-10:
+            # The dot product is very close to zero, treat it as nearly perpendicular vectors (90 degrees)
+            return 90  # or another value representing a 90-degree angle
+
+        # Calculate the angle in radians between the two vectors using the dot product
+        angle_rad = math.acos(max(-1, min(1, dot_product / (magnitude1 * magnitude2))))
+
+        # Convert the angle from radians to degrees
         angle_deg = math.degrees(angle_rad)
         return angle_deg
+

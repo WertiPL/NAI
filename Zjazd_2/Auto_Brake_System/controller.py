@@ -3,7 +3,7 @@
 Auto Brake System Szenborn Jan, Rostkowski Wiktor,  2023
 
 
-The code is designed to address a problem related to train braking control.
+The System is designed to address a problem related to train braking control.
 It uses fuzzy logic to determine the braking force required for a train based on three input parameters:
     distance to turn, angle of turn, and speed of the train.
     The goal is to provide a braking force recommendation to ensure safe and effective train control when navigating curves or turns.
@@ -25,13 +25,13 @@ class TrainBrakingController:
     def __init__(self):
         self.distance_to_turn = ctrl.Antecedent(np.arange(0, 800, 1), 'distance_to_turn')
         self.angle_of_turn = ctrl.Antecedent(np.arange(0, 180, 1), 'angle_of_turn')
-        self.speed_of_train = ctrl.Antecedent(np.arange(0, 5, 1), 'speed_of_train')
-        self.braking_force = ctrl.Consequent(np.arange(0, 2, 1), 'braking_force')
+        self.speed_of_train = ctrl.Antecedent(np.arange(0, 5, 0.01), 'speed_of_train')
+        self.braking_force = ctrl.Consequent(np.arange(0, 0.2, 0.01), 'braking_force')
         self.rules = []
         self.controller = self.init_controller()
 
     def generate_distance_to_turn_mf(self):
-        self.distance_to_turn.automf(number=3, names=['slight', 'moderate', 'sharp'])
+        self.distance_to_turn.automf(number=3, names=['big', 'medium', 'short'])
 
     def generate_angle_of_turn_mf(self):
         self.angle_of_turn.automf(number=3, names=['small', 'medium', 'large'])
@@ -50,11 +50,11 @@ class TrainBrakingController:
 
     def generate_rules(self):
         return [
-            ctrl.Rule(self.distance_to_turn['slight'] & self.angle_of_turn['small'] & self.speed_of_train['slow'],
+            ctrl.Rule(self.distance_to_turn['big'] & self.angle_of_turn['small'] & self.speed_of_train['slow'],
                       self.braking_force['light']),
-            ctrl.Rule(self.distance_to_turn['moderate'] & self.angle_of_turn['medium'] & self.speed_of_train['moderate'],
+            ctrl.Rule(self.distance_to_turn['medium'] & self.angle_of_turn['medium'] & self.speed_of_train['moderate'],
                       self.braking_force['moderate']),
-            ctrl.Rule(self.distance_to_turn['sharp'] & self.angle_of_turn['large'] & self.speed_of_train['fast'],
+            ctrl.Rule(self.distance_to_turn['short'] & self.angle_of_turn['large'] & self.speed_of_train['fast'],
                       self.braking_force['heavy'])]
 
     def init_controller(self):
@@ -81,11 +81,11 @@ class TrainBrakingController:
         self.braking_force.view()
 
         # Create a rule visualization
-        rule1 = ctrl.Rule(self.distance_to_turn['slight'] & self.angle_of_turn['small'] & self.speed_of_train['slow'],
+        rule1 = ctrl.Rule(self.distance_to_turn['big'] & self.angle_of_turn['small'] & self.speed_of_train['slow'],
                           self.braking_force['light'])
-        rule2 = ctrl.Rule(self.distance_to_turn['moderate'] & self.angle_of_turn['large'] & self.speed_of_train['fast'],
+        rule2 = ctrl.Rule(self.distance_to_turn['medium'] & self.angle_of_turn['large'] & self.speed_of_train['fast'],
                           self.braking_force['light'])
-        rule3 = ctrl.Rule(self.distance_to_turn['sharp'] & self.angle_of_turn['medium'] & self.speed_of_train['slow'],
+        rule3 = ctrl.Rule(self.distance_to_turn['short'] & self.angle_of_turn['medium'] & self.speed_of_train['slow'],
                           self.braking_force['light'])
         rule1.view()
         rule2.view()
