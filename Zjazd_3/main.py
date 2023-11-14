@@ -24,7 +24,7 @@ How to Use:
        ...
    }
 
-   [optional]  if you have problem with json file because you used polish alphabet you should recodejson.py
+   [optional]  if you have problem with json file because you used polish alphabet you should use recodejson.py
 
 4. Run the script:
    - Open a terminal and navigate to the script's directory.
