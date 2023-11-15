@@ -9,8 +9,9 @@ How to Use:
 1. Install required libraries:
    - Run the following command to install the necessary libraries:
      ```
-     pip install numpy
+     pip install numpy requests
      ```
+     or run pip3 -r install requirements.txt from main folder.
 
 2. Prepare your movie ratings dataset:
    - Our application currently has demo ratings from 1 to 13 users, but you can create your own dataset.
@@ -48,6 +49,7 @@ Enjoy discovering new movies!
 
 import json
 import numpy as np
+from api import get_movie_details
 
 
 def calculate_pearson_score(dataset, user1, user2):
@@ -144,10 +146,21 @@ if __name__ == '__main__':
     print(f"\nTop 5 movie suggestions for user {user}:")
 
     for i, movie in zip(range(5), recommended_movies):
-        print(f"{i + 1}. {movie}")
+        details = get_movie_details(movie)
+
+        if details:
+            print(f"{movie} ({details['Year']}, {details['Genre']}, IMDB rating: {details['imdbRating']})")
+        else:
+            print(f"{movie}")
+
 
     # Display also movies that user shouldn't watch
     print(f"\n\nTop 5 movies that user {user} would not like:")
 
     for i, movie in enumerate(recommended_movies[-5:]):
-        print(f"{movie}")
+        details = get_movie_details(movie)
+
+        if details:
+            print(f"{movie} ({details['Year']}, {details['Genre']}, IMDB rating: {details['imdbRating']})")
+        else:
+            print(f"{movie}")

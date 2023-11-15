@@ -1,4 +1,6 @@
 pygame~=2.5
 shapely~=2.0
 scikit-fuzzy==0.4.2
-matplotlib
+matplotlib~=3.8.1
+numpy~=1.26.1
+requests~=2.31.0
