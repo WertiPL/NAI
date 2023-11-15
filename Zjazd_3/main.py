@@ -51,7 +51,7 @@ import numpy as np
 
 
 def calculate_pearson_score(dataset, user1, user2):
-    '''Calculate the Pearson correlation score between two users'''
+    """Calculate the Pearson correlation score between two users"""
 
     if user1 not in dataset or user2 not in dataset:
         raise ValueError(f"User {user1} or {user2} not found in the dataset")
@@ -90,7 +90,7 @@ def calculate_pearson_score(dataset, user1, user2):
 
 
 def generate_movie_recommendations(dataset, input_user):
-    '''Generate movie recommendations for the input user'''
+    """Generate movie recommendations for the input user"""
 
     if input_user not in dataset:
         raise ValueError(f"User {input_user} not found in the dataset")
@@ -139,8 +139,15 @@ if __name__ == '__main__':
         data = json.load(file)
 
     # Generate and display movie recommendations for the specified user
-    print(f"\nMovie suggestions for {user}:")
     recommended_movies = generate_movie_recommendations(data, user)
 
-    for i, movie in enumerate(recommended_movies):
+    print(f"\nTop 5 movie suggestions for user {user}:")
+
+    for i, movie in zip(range(5), recommended_movies):
         print(f"{i + 1}. {movie}")
+
+    # Display also movies that user shouldn't watch
+    print(f"\n\nTop 5 movies that user {user} would not like:")
+
+    for i, movie in enumerate(recommended_movies[-5:]):
+        print(f"{movie}")
