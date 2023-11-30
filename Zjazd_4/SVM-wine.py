@@ -1,3 +1,19 @@
+"""
+Running device guesser, Wiktor Rostkowski Jan Szenborn, 2023
+
+Wine Quality Classifier and SVM Visualization, 
+
+This script analyzes the wine quality dataset, aiming to classify wines into two categories based on their features.
+It uses Support Vector Machines (SVM) with a grid search.
+
+How to Use:
+1. Ensure you have the necessary dependencies installed by running `pip install -r requirements.txt`.
+2. Execute the script using Python with `python SVM-wine.py`.
+3. Explore the SVM classifier accuracy and detailed classification report for the wine quality dataset.
+4. Visualize the decision function of SVM classifiers with different hyperparameters.
+
+Note: The wine quality is transformed into two categories, 0 and 1, based on user-defined quality ranges.
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
