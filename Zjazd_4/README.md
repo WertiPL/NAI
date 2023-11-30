@@ -14,7 +14,7 @@ $ python3 wine.py
 
 - `data/winequality-white.csv`: CSV file containing the white wine dataset.
 - `wine_classifier.py`: Main script for training SVM classifier and evaluating wine quality.
-
+```
 ## Classification Report Metrics Explanation
 
 In the classification report provided by Scikit-Learn, various metrics are displayed to help assess the quality of the classification model. Below are explanations for each parameter:
