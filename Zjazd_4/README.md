@@ -77,16 +77,16 @@ Here is sample one:
 ## Wine classification by SVM
 
 ```
-SVM classifier accuracy: 0.79
+SVM classifier accuracy: 0.81
 
               precision    recall  f1-score   support
 
-           0       0.79      1.00      0.88       772
-           1       1.00      0.00      0.00       208
+           0       0.83      0.94      0.89       772
+           1       0.59      0.30      0.40       208
 
-    accuracy                           0.79       980
-   macro avg       0.89      0.50      0.44       980
-weighted avg       0.83      0.79      0.69       980
+    accuracy                           0.81       980
+   macro avg       0.71      0.62      0.64       980
+weighted avg       0.78      0.81      0.78       980
 
 ```
 
