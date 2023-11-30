@@ -90,6 +90,23 @@ weighted avg       0.78      0.81      0.78       980
 
 ```
 
+
+## Energy Classification by SVM
+```
+SVM classifier accuracy: 0.93
+
+              precision    recall  f1-score   support
+
+     charger       1.00      1.00      1.00       153
+     cooktop       0.85      0.96      0.90       155
+        none       0.96      0.84      0.90       163
+
+    accuracy                           0.93       471
+   macro avg       0.94      0.93      0.93       471
+weighted avg       0.94      0.93      0.93       471
+```
+
+
 # Classification Report Metrics Explanation
 
 In the classification report provided by Scikit-Learn, various metrics are displayed to help assess the quality of the classification model. Below are explanations for each parameter:
