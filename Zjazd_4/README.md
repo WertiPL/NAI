@@ -54,7 +54,6 @@ In the classification report provided by Scikit-Learn, various metrics are displ
 
 - Averages for different classes, differences arise from different approaches to calculations for multiple classes.
 
-Feel free to customize this README according to your project's specific details and requirements.
 
 
 
@@ -81,6 +80,21 @@ weighted avg       0.61      0.60      0.61       980
 ```
 
 After running sample, you can preview [full tree visualisation](./wine_tree.svg)
+
+
+```
+SVM classifier accuracy: 0.79
+
+              precision    recall  f1-score   support
+
+           0       0.79      1.00      0.88       772
+           1       1.00      0.00      0.00       208
+
+    accuracy                           0.79       980
+   macro avg       0.89      0.50      0.44       980
+weighted avg       0.83      0.79      0.69       980
+
+```
 
 
 =======
@@ -121,16 +135,3 @@ Here is sample one:
 
 ![Energy tree](./screenshots/energy_tree.jpg)
 
-```
-SVM classifier accuracy: 0.79
-
-              precision    recall  f1-score   support
-
-           0       0.79      1.00      0.88       772
-           1       1.00      0.00      0.00       208
-
-    accuracy                           0.79       980
-   macro avg       0.89      0.50      0.44       980
-weighted avg       0.83      0.79      0.69       980
-
-```
