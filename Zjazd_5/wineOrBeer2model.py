@@ -1,7 +1,7 @@
 """
 Beer Wine classifier, Jan Szenborn,  2023
-
-This script will train a neural network to detect which product is wine or beer looking only on price and alcohol .
+Second different model to compare result
+This script will train a neural network to detect which is wine or beer looking only on price and alcohol .
 Then, it will try to detect wine or beer using that model and will print statistic metrics.
 
 How to use:
@@ -15,6 +15,11 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.metrics import ConfusionMatrixDisplay
+
+import os
+
+# Less verbose
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # Configuration
 random_state = 42
@@ -33,8 +38,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Define the model
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(32, activation='relu', input_shape=(2,)),
-    tf.keras.layers.Dense(1, activation='sigmoid')
-])
+    tf.keras.layers.Dense(16, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid')])
 
 # Compile the model
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),

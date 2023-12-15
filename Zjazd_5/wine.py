@@ -23,7 +23,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 
 # Configuration
-random_state = 123
+random_state = 132
 
 # Prepare data
 data = pd.read_csv('../Zjazd_4/data/winequality-white.csv', sep=';')
