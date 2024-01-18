@@ -1,6 +1,28 @@
 # Jan Szenborn Wiktor Rostkowski , 2024
+
 import cv2
 import mediapipe as mp
+
+
+def detect_face(frame):
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    face_rects = face_cascade.detectMultiScale(gray, 1.3, 5)
+    return len(face_rects) > 0
+
+
+def detect_eyes(frame):
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    eyes = eye_cascade.detectMultiScale(gray)
+    return len(eyes) > 0
+
+
+def detect_pose(frame, pose):
+    frame.flags.writeable = False
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = pose.process(frame_rgb)
+    frame.flags.writeable = True
+    return results.pose_landmarks is not None
+
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
@@ -13,34 +35,41 @@ mp_pose = mp.solutions.pose
 
 cap = cv2.VideoCapture(0)
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
-
     while cap.isOpened():
         _, frame = cap.read()
-        frame.flags.writeable = False
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = pose.process(frame)
 
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        face_rects = face_cascade.detectMultiScale(gray, 1.3, 5)
 
-        for (x, y, w, h) in face_rects:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 120, 0), 3)
-            eye_gray = gray[y:y + h, x:x + w]
-            eye_color = frame[y:y + h, x:x + w]
+        face_detected = detect_face(frame)
+        eyes_detected = detect_eyes(frame)
+        pose_detected = detect_pose(frame, pose)
 
-            eyes = eye_cascade.detectMultiScale(eye_gray)
-            for (ex,ey,ew,eh) in eyes:
-                cv2.rectangle(eye_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
-        frame.flags.writeable = True
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-        mp_drawing.draw_landmarks(
-            frame,
-            results.pose_landmarks,
-            mp_pose.POSE_CONNECTIONS,
-            landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style()
-        )
+        # Draw rectangles or landmarks on the frame based on detection results
+        if face_detected and eyes_detected and pose_detected:
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            face_rects = face_cascade.detectMultiScale(gray, 1.3, 5)
+            for (x, y, w, h) in face_rects:
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 120, 0), 3)
+
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            eyes = eye_cascade.detectMultiScale(gray)
+            for (ex, ey, ew, eh) in eyes:
+                cv2.rectangle(frame, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
+
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            mp_drawing.draw_landmarks(
+                frame_rgb,
+                pose.process(frame_rgb).pose_landmarks,
+                mp_pose.POSE_CONNECTIONS,
+                landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style()
+            )
+            frame = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
+
+
+        # Display the frame with detection results
         cv2.imshow('Active Ads', frame)
+
         if cv2.waitKey(5) == 27:
             break
 
 cap.release()
+cv2.destroyAllWindows()
