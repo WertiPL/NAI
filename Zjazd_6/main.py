@@ -11,6 +11,7 @@ WIDTH, HEIGHT = 900, 900
 
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
+
 def detect_face(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     face_rects = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -44,11 +45,9 @@ mp_pose = mp.solutions.pose
 file_path = 'Volvo_Trucks_Advertisement.mp4'
 
 # Start ADS
-video_player = Video(file_path)
-video_player.set_size((900, 900))
-video_player.draw(SCREEN, (0, 0))
-video_player.toggle_pause()
 
+
+detect = 0
 cap = cv2.VideoCapture(0)
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
     while cap.isOpened():
@@ -59,8 +58,12 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         pose_detected = detect_pose(frame, pose)
 
         # Draw rectangles or landmarks on the frame based on detection results
-        if face_detected and eyes_detected and pose_detected:
-            video_player.toggle_pause()
+        if face_detected or eyes_detected and pose_detected:
+            if detect == 0:
+                video_player = Video(file_path)
+                video_player.set_size((900, 900))
+                video_player.draw(SCREEN, (0, 0))
+                detect = 1
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             face_rects = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -82,9 +85,12 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             frame = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
 
         else:
-            print("Pause ...")
+            if detect == 1:
+                print("Pause ...")
 
-            video_player.toggle_pause()
+                video_player.close()
+                detect = 0
+
 
         # Display the frame with detection results
         cv2.imshow('Active Ads', frame)
